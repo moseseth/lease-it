@@ -1,0 +1,69 @@
+version: '3.1'
+services:
+  mariadb:
+    image: mariadb:10.6.14-focal
+    container_name: mariadb
+    env_file:
+      - .env
+    ports:
+      - ${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}
+    restart: unless-stopped
+    environment:
+      MYSQL_USER: '${MYSQL_USER}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+    volumes:
+      - lease-db:/var/lib/mysql
+    networks:
+      - spring-network
+
+  adminer:
+    depends_on:
+      - mariadb
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    env_file:
+      - .env
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+    networks:
+      - spring-network
+
+  api:
+    build:
+      context: ./lease-api
+      dockerfile: Dockerfile
+    image: lease-api:latest
+    env_file:
+      - .env
+    ports:
+      - ${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}
+    depends_on:
+      - mariadb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/${MYSQL_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - spring-network
+
+#  ui:
+#    build:
+#      context: ./lease-ui
+#      dockerfile: Dockerfile
+#    image: lease-ui:latest
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - api
+
+volumes:
+  lease-db:
+
+networks:
+  spring-network:
+    driver: bridge
