@@ -9,10 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Builder
-@Getter
 public record LeasingContractDTO(
-        @NotNull(message = "Contract number is required")
-        Integer contractNumber,
         @NotNull(message = "Monthly rate is required")
         BigDecimal monthlyRate,
         @NotNull(message = "Customer is required")

@@ -29,18 +29,18 @@ public class CustomerService {
     }
 
     public boolean updateCustomer(Long id, CustomerEditRequest request) {
-        if (!isValidBirthdateFormat(request.getBirthdate())) {
+        if (!isValidBirthdateFormat(request.birthdate())) {
             return false;
         }
 
-        LocalDate birthdate = LocalDate.parse(request.getBirthdate());
+        LocalDate birthdate = LocalDate.parse(request.birthdate());
 
         Optional<Customer> customer = customerRepository.findById(id);
 
         if (customer.isPresent()) {
             Customer existingCustomer = customer.get();
-            existingCustomer.setFirstName(request.getFirstName());
-            existingCustomer.setLastName(request.getLastName());
+            existingCustomer.setFirstName(request.firstName());
+            existingCustomer.setLastName(request.lastName());
             existingCustomer.setBirthdate(birthdate);
 
             existingCustomer.setId(existingCustomer.getId());

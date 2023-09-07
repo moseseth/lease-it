@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Builder
 public record ContractOverviewDTO (
-    Integer contractNumber,
+    String contractNumber,
     String customerSummary,
     String vehicleBrand,
     String vehicleModel,

@@ -68,14 +68,13 @@ public class LeaseContractService {
     }
 
     private LeasingContract createOrUpdateLeasingContract(LeasingContract contract, LeasingContractDTO dto) {
-        contract.setContractNumber(dto.getContractNumber());
-        contract.setMonthlyRate(dto.getMonthlyRate());
+        contract.setMonthlyRate(dto.monthlyRate());
 
-        Customer customer = customerRepository.findById(dto.getCustomerId())
-                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + dto.getCustomerId()));
+        Customer customer = customerRepository.findById(dto.customerId())
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + dto.customerId()));
 
-        Vehicle vehicle = vehicleRepository.findById(dto.getVehicleId())
-                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found with ID: " + dto.getVehicleId()));
+        Vehicle vehicle = vehicleRepository.findById(dto.vehicleId())
+                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found with ID: " + dto.vehicleId()));
 
         contract.setCustomer(customer);
         contract.setVehicle(vehicle);

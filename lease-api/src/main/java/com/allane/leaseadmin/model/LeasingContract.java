@@ -6,7 +6,10 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
+import java.util.Random;
 
 @Getter
 @Setter
@@ -17,25 +20,24 @@ import java.util.Objects;
 @Entity
 public class LeasingContract {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contract_seq")
-    @SequenceGenerator(name = "contract_seq", sequenceName = "contract_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull(message = "Contract number is required")
-    @Column(name = "contract_number")
-    private Integer contractNumber;
+    @Column(name = "contract_number", unique = true, nullable = false)
+    private String contractNumber;
 
     @NotNull(message = "Monthly rate is required")
     @Column(name = "monthly_rate")
     private BigDecimal monthlyRate;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @NotNull(message = "Customer is required")
     private Customer customer;
 
     @OneToOne
-    @JoinColumn(name = "vehicle_id")
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     @NotNull(message = "Vehicle is required")
     private Vehicle vehicle;
 
@@ -53,5 +55,22 @@ public class LeasingContract {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.contractNumber = generateUniqueContractNumber();
+    }
+
+    private String generateUniqueContractNumber() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String timestamp = dateFormat.format(new Date());
+
+        Random random = new Random();
+        int minDigits = 100;
+        int maxDigits = 999_999;
+        int randomPart = random.nextInt(maxDigits - minDigits + 1) + minDigits;
+
+        return timestamp + String.format("%09d", randomPart);
     }
 }

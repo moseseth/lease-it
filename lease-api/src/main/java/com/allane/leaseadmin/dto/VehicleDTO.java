@@ -6,7 +6,6 @@ import lombok.Getter;
 import java.math.BigDecimal;
 
 @Builder
-@Getter
 public record VehicleDTO(
         String brand,
         String model,

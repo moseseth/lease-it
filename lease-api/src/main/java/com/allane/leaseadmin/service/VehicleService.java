@@ -23,11 +23,11 @@ public class VehicleService {
     public Vehicle createVehicle(@Valid VehicleDTO vehicleDTO) {
         // Create a new Vehicle instance from the DTO
         Vehicle newVehicle = Vehicle.builder()
-                .brand(vehicleDTO.getBrand())
-                .model(vehicleDTO.getModel())
-                .modelYear(vehicleDTO.getModelYear())
-                .vehicleIdentificationNumber(vehicleDTO.getVehicleIdentificationNumber())
-                .price(vehicleDTO.getPrice())
+                .brand(vehicleDTO.brand())
+                .model(vehicleDTO.model())
+                .modelYear(vehicleDTO.modelYear())
+                .vehicleIdentificationNumber(vehicleDTO.vehicleIdentificationNumber())
+                .price(vehicleDTO.price())
                 .build();
 
         // Save the new vehicle to the database
@@ -53,11 +53,11 @@ public class VehicleService {
 
         Vehicle existingVehicle = getVehicleById(id);
         Vehicle updatedVehicle = Vehicle.builder()
-                .brand(updatedVehicleDTO.getBrand())
-                .model(updatedVehicleDTO.getModel())
-                .modelYear(updatedVehicleDTO.getModelYear())
-                .vehicleIdentificationNumber(updatedVehicleDTO.getVehicleIdentificationNumber())
-                .price(updatedVehicleDTO.getPrice())
+                .brand(updatedVehicleDTO.brand())
+                .model(updatedVehicleDTO.model())
+                .modelYear(updatedVehicleDTO.modelYear())
+                .vehicleIdentificationNumber(updatedVehicleDTO.vehicleIdentificationNumber())
+                .price(updatedVehicleDTO.price())
                 .build();
 
         updatedVehicle.setId(existingVehicle.getId());
