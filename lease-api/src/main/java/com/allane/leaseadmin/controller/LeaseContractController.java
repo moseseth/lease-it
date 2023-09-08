@@ -7,6 +7,7 @@ import com.allane.leaseadmin.dto.ValidationErrorResponse;
 import com.allane.leaseadmin.model.LeasingContract;
 import com.allane.leaseadmin.service.LeaseContractService;
 import com.allane.leaseadmin.util.ValidationHelper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/leasing-contracts")
+@Tag(name = "Lease Contracts", description = "API endpoints for managing lease contract information")
 public class LeaseContractController {
 
     private final LeaseContractService leaseContractService;

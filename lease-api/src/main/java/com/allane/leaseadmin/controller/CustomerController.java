@@ -6,6 +6,7 @@ import com.allane.leaseadmin.dto.ValidationErrorResponse;
 import com.allane.leaseadmin.model.Customer;
 import com.allane.leaseadmin.service.CustomerService;
 import com.allane.leaseadmin.util.ValidationHelper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import static com.allane.leaseadmin.util.ValidationHelper.isValidBirthdateFormat
 
 @RestController
 @RequestMapping("/customers")
+@Tag(name = "Customer", description = "API endpoints for managing customer information")
 public class CustomerController {
     private final CustomerService customerService;
 

@@ -6,6 +6,7 @@ import com.allane.leaseadmin.dto.VehicleDTO;
 import com.allane.leaseadmin.model.Vehicle;
 import com.allane.leaseadmin.service.VehicleService;
 import com.allane.leaseadmin.util.ValidationHelper;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/vehicles")
+@Tag(name = "Vehicles", description = "API endpoints for managing vehicle information")
 public class VehicleController {
     private final VehicleService vehicleService;
 
