@@ -17,11 +17,9 @@ import java.time.LocalDate;
 @Service
 public class CustomerService {
     private final CustomerRepository customerRepository;
-
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
-
     public Customer createCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
@@ -34,10 +32,6 @@ public class CustomerService {
 
     @Transactional
     public Customer updateCustomer(Long id, @Valid CustomerEditRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Updated customer data cannot be null.");
-        }
-
         LocalDate birthdate = LocalDate.parse(request.birthdate());
 
         Customer existingCustomer = getCustomerById(id);
@@ -51,5 +45,4 @@ public class CustomerService {
 
         return customerRepository.save(updatedCustomer);
     }
-
 }

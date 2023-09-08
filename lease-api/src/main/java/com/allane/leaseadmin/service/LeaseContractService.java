@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class LeaseContractService {
@@ -75,14 +74,13 @@ public class LeaseContractService {
     }
 
     private LeasingContract createOrUpdateLeasingContract(LeasingContract contract, LeasingContractDTO dto) {
-        contract.setMonthlyRate(dto.monthlyRate());
-
         Customer customer = customerRepository.findById(dto.customerId())
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + dto.customerId()));
 
         Vehicle vehicle = vehicleRepository.findById(dto.vehicleId())
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle not found with ID: " + dto.vehicleId()));
 
+        contract.setMonthlyRate(dto.monthlyRate());
         contract.setCustomer(customer);
         contract.setVehicle(vehicle);
 
