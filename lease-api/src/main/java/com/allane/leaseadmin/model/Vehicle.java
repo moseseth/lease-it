@@ -1,7 +1,9 @@
 package com.allane.leaseadmin.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.Check;
 import org.hibernate.proxy.HibernateProxy;
@@ -29,14 +31,17 @@ public class Vehicle {
     @Column(nullable = false)
     private String model;
 
-    @Column(name = "model_year", nullable = false)
+    @Column(name = "model_year")
+    @NotNull(message = "Model year is required")
     @Check(constraints = "model_year >= 1900")
     private Integer modelYear;
 
     @Column(name = "vin")
     private String vehicleIdentificationNumber;
 
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    @Column(name = "price", precision = 10, scale = 2)
+    @NotNull(message = "Price is required")
+    @DecimalMin("0")
     private BigDecimal price;
 
     @Override

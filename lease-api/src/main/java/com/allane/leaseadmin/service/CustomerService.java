@@ -1,15 +1,18 @@
 package com.allane.leaseadmin.service;
 
 import com.allane.leaseadmin.dto.CustomerEditRequest;
+import com.allane.leaseadmin.dto.ErrorResponse;
 import com.allane.leaseadmin.exception.ResourceNotFoundException;
 import com.allane.leaseadmin.model.Customer;
+import com.allane.leaseadmin.model.Vehicle;
 import com.allane.leaseadmin.repository.CustomerRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -23,45 +26,30 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
+    @Transactional(readOnly = true)
     public Customer getCustomerById(Long id) {
         return customerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id " + id));
     }
 
-    public boolean updateCustomer(Long id, CustomerEditRequest request) {
-        if (!isValidBirthdateFormat(request.birthdate())) {
-            return false;
+    @Transactional
+    public Customer updateCustomer(Long id, @Valid CustomerEditRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Updated customer data cannot be null.");
         }
 
         LocalDate birthdate = LocalDate.parse(request.birthdate());
 
-        Optional<Customer> customer = customerRepository.findById(id);
+        Customer existingCustomer = getCustomerById(id);
+        Customer updatedCustomer = Customer.builder()
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .birthdate(birthdate)
+                .build();
 
-        if (customer.isPresent()) {
-            Customer existingCustomer = customer.get();
-            existingCustomer.setFirstName(request.firstName());
-            existingCustomer.setLastName(request.lastName());
-            existingCustomer.setBirthdate(birthdate);
+        updatedCustomer.setId(existingCustomer.getId());
 
-            existingCustomer.setId(existingCustomer.getId());
-
-            customerRepository.save(existingCustomer);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean isValidBirthdateFormat(String dateStr) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        try {
-            dateFormat.parse(dateStr);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
+        return customerRepository.save(updatedCustomer);
     }
 
 }

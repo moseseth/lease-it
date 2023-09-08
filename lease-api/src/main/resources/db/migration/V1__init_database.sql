@@ -37,6 +37,9 @@ ALTER TABLE IF EXISTS leasing_contract
 ALTER TABLE IF EXISTS leasing_contract
     ADD CONSTRAINT FK_LEASINGCONTRACT_ON_VEHICLE FOREIGN KEY (vehicle_id) REFERENCES vehicle (id);
 
+ALTER TABLE IF EXISTS vehicle
+    ADD CONSTRAINT check_model_year CHECK (model_year >= 1900);
+
 INSERT INTO vehicle (brand, model, model_year, price, vin)
 VALUES ('Toyota', 'Camry', 2022, 25000.00, 'ABC123'),
        ('Honda', 'Civic', 2021, 22000.00, 'XYZ789'),

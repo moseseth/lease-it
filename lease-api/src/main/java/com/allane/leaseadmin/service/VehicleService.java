@@ -2,6 +2,7 @@ package com.allane.leaseadmin.service;
 
 import com.allane.leaseadmin.dto.VehicleDTO;
 import com.allane.leaseadmin.exception.ResourceNotFoundException;
+import com.allane.leaseadmin.model.Customer;
 import com.allane.leaseadmin.model.Vehicle;
 import com.allane.leaseadmin.repository.VehicleRepository;
 import jakarta.validation.Valid;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VehicleService {
@@ -20,17 +22,15 @@ public class VehicleService {
     }
 
     @Transactional
-    public Vehicle createVehicle(@Valid VehicleDTO vehicleDTO) {
-        // Create a new Vehicle instance from the DTO
+    public Vehicle createVehicle(@Valid Vehicle vehicle) {
         Vehicle newVehicle = Vehicle.builder()
-                .brand(vehicleDTO.brand())
-                .model(vehicleDTO.model())
-                .modelYear(vehicleDTO.modelYear())
-                .vehicleIdentificationNumber(vehicleDTO.vehicleIdentificationNumber())
-                .price(vehicleDTO.price())
+                .brand(vehicle.getBrand())
+                .model(vehicle.getModel())
+                .modelYear(vehicle.getModelYear())
+                .vehicleIdentificationNumber(vehicle.getVehicleIdentificationNumber())
+                .price(vehicle.getPrice())
                 .build();
 
-        // Save the new vehicle to the database
         return vehicleRepository.save(newVehicle);
     }
 
@@ -62,6 +62,6 @@ public class VehicleService {
 
         updatedVehicle.setId(existingVehicle.getId());
 
-        return vehicleRepository.save(existingVehicle);
+        return vehicleRepository.save(updatedVehicle);
     }
 }

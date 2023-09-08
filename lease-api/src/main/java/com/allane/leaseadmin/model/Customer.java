@@ -2,6 +2,7 @@ package com.allane.leaseadmin.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class Customer {
     private String lastName;
 
     @Past(message = "Birthdate should be in the past")
+    @NotNull(message = "Birthdate is required")
     @Column(name = "birthdate")
     private LocalDate birthdate;
 }

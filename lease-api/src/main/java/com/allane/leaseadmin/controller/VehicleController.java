@@ -1,12 +1,15 @@
 package com.allane.leaseadmin.controller;
 
 
+import com.allane.leaseadmin.dto.ValidationErrorResponse;
 import com.allane.leaseadmin.dto.VehicleDTO;
 import com.allane.leaseadmin.model.Vehicle;
 import com.allane.leaseadmin.service.VehicleService;
+import com.allane.leaseadmin.util.ValidationHelper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,9 +25,14 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<Vehicle> createVehicle(@Valid @RequestBody VehicleDTO vehicleDTO) {
-        Vehicle createdVehicle = vehicleService.createVehicle(vehicleDTO);
-        return new ResponseEntity<>(createdVehicle, HttpStatus.CREATED);
+    public ResponseEntity<?> createVehicle(@Valid @RequestBody Vehicle vehicle, BindingResult bindingResult) {
+        List<ValidationErrorResponse> validationErrorsResponse = ValidationHelper.handleValidationErrors(bindingResult);
+        if (validationErrorsResponse != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationErrorsResponse);
+        }
+
+        Vehicle createdVehicle = vehicleService.createVehicle(vehicle);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdVehicle);
     }
 
     @GetMapping
@@ -45,7 +53,7 @@ public class VehicleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id, @Valid @RequestBody VehicleDTO vehicleDTO) {
+    public ResponseEntity<?> updateVehicle(@PathVariable Long id, @Valid @RequestBody VehicleDTO vehicleDTO) {
         Vehicle updated = vehicleService.updateVehicle(id, vehicleDTO);
         return ResponseEntity.ok(updated);
     }
