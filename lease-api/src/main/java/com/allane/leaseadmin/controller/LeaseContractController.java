@@ -23,6 +23,7 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/leasing-contracts")
 @Tag(name = "Lease Contracts", description = "API endpoints for managing lease contract information")
+@CrossOrigin
 public class LeaseContractController {
 
     private final LeaseContractService leaseContractService;

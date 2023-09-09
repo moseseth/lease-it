@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {Sidebar, Menu, MenuItem, SubMenu} from 'react-pro-sidebar';
-import {SidebarHeader} from '../../components/SidebarHeader';
+import {Sidebar, Menu, MenuItem} from 'react-pro-sidebar';
+import {SidebarHeader} from '../components/SidebarHeader';
 import {Typography} from "@mui/material";
 import ChecklistOutlinedIcon from '@mui/icons-material/ChecklistOutlined';
 import {CarRentalOutlined, CreditScoreOutlined, PersonAddAltOutlined} from "@mui/icons-material";
-import ContractOverview from "../../components/ContractOverview";
+import ContractOverview from "../components/ContractOverview";
 
 function Dashboard() {
     const [selectedMenu, setSelectedMenu] = useState('Dashboard');

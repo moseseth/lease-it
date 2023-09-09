@@ -1,270 +1,76 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
 import {
-  GridRowsProp,
   GridRowModesModel,
   GridRowModes,
   DataGrid,
   GridColDef,
-  GridActionsCellItem,
   GridRowId,
 } from '@mui/x-data-grid';
-import {
-  randomCreatedDate,
-  randomTraderName,
-  randomId,
-  randomArrayItem,
-} from '@mui/x-data-grid-generator';
-
-const roles = [ 'Market', 'Finance', 'Development' ];
-const randomRole = () => {
-  return randomArrayItem(roles);
-};
-
-const initialRows: GridRowsProp = [
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 25,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 36,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 19,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 28,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 23,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 25,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 36,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 19,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 28,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 23,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 25,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 36,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 19,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 28,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 23,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 19,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 28,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 23,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 19,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 28,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 23,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 19,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 28,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 23,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 19,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 28,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    age: 23,
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-];
+import { useEffect } from "react";
+import axios from "axios";
+import { IconButton } from '@mui/material';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 export default function ContractOverview () {
-  const [ rows, setRows ] = React.useState(initialRows);
+  const [ rows, setRows ] = React.useState([]);
   const [ rowModesModel, setRowModesModel ] = React.useState<GridRowModesModel>({});
 
-  const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleSaveClick = (id: GridRowId) => () => {
+  const handleDetailsClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleCancelClick = (id: GridRowId) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-  };
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_ADDRESS}/leasing-contracts/overview`)
+      .then(response => {
+        setRows(response.data.content);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
+
 
   const columns: GridColDef[] = [
     {
-      field: 'name',
+      field: 'contractNumber',
       headerName: 'Contract Number',
-      width: 180
+      width: 280
     },
     {
-      field: 'age',
+      field: 'customerSummary',
       headerName: 'Customer',
       width: 180,
     },
     {
-      field: 'joinDate',
+      field: 'vehicle',
       headerName: 'Vehicle',
       width: 180,
+      renderCell: (params) => {
+        const { vehicleBrand, vehicleModel, vehicleModelYear } = params.row;
+        return `${vehicleBrand} ${vehicleModel} (${vehicleModelYear})`;
+      },
     },
     {
-      field: 'role',
+      field: 'vehicleVin',
       headerName: 'VIN',
       width: 180,
+      renderCell: (params) => {
+        const { vehicleVin } = params.row;
+        return vehicleVin === '' ? '-' : vehicleVin;
+      },
     },
     {
-      field: 'joinDate',
+      field: 'monthlyRate',
       headerName: 'Monthly Rate',
       width: 180,
+      valueFormatter: (params) => `${params.value.toFixed(2)} €`
     },
     {
-      field: 'role',
+      field: 'vehiclePrice',
       headerName: 'Vehicle Price',
       width: 180,
+      valueFormatter: (params) => params.value.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })
     },
     {
       field: 'actions',
@@ -272,39 +78,9 @@ export default function ContractOverview () {
       headerName: 'Details',
       width: 100,
       cellClassName: 'actions',
-      getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
-        if (isInEditMode) {
-          return [
-            <GridActionsCellItem
-              icon={ <SaveIcon/> }
-              label="Save"
-              sx={ {
-                color: 'primary.main',
-              } }
-              onClick={ handleSaveClick(id) }
-            />,
-            <GridActionsCellItem
-              icon={ <CancelIcon/> }
-              label="Cancel"
-              className="textPrimary"
-              onClick={ handleCancelClick(id) }
-              color="inherit"
-            />,
-          ];
-        }
-
-        return [
-          <GridActionsCellItem
-            icon={ <OpenInNewOutlinedIcon/> }
-            label="Edit"
-            className="textPrimary"
-            onClick={ handleEditClick(id) }
-            color="inherit"
-          />
-        ];
-      },
+      renderCell: (params) => (
+        <IconButton onClick={() => handleDetailsClick(params.row.contractDetailsLink)}><LaunchIcon /></IconButton>
+      )
     },
   ];
 
@@ -319,6 +95,7 @@ export default function ContractOverview () {
     }}>
       <DataGrid
         rows={ rows }
+        getRowId={(row) => row.contractNumber}
         columns={ columns }
       />
     </Box>
