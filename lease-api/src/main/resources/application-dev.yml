@@ -1,9 +1,19 @@
+server:
+  port: 9090
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+    generate-ddl: true
+    show-sql: true
   datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/lease
     username: admin
     password: secret
-    driver-class-name: org.mariadb.jdbc.Driver
 
 openapi:
   dev-url: http://localhost:9090/api

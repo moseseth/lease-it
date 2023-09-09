@@ -1,20 +1,11 @@
 server:
-  port: 9090
   servlet:
     context-path: /api
   error:
     include-stacktrace: never
 spring:
   profiles:
-    active: dev
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MariaDBDialect
-    generate-ddl: true
-    show-sql: true
+    active: local
   data:
     rest:
       base-path: /api

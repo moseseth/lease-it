@@ -29,7 +29,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<List<ErrorResponse>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         List<ErrorResponse> errors = new ArrayList<>();
         String message = Objects.requireNonNull(ex.getRootCause()).getMessage();
-        if (message.contains("check_model_year")) {
+        if (message.toLowerCase().contains("check_model_year")) {
             errors.add(new ErrorResponse("VALIDATION_ERROR_MODEL_YEAR",
                     "The provided model year does not meet the constraints"));
         } else {
