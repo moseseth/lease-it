@@ -13,8 +13,8 @@ You can run the project either locally or using Docker.
 
 -   To run locally, you need Java 17 and Gradle installed. Then, follow these steps:
 
-    1.  Go to lease-admin/lease-api/ and run: `./gradlew bootRun`
-    2.  Go to lease-admin/lease-ui/ and run: `npm start`
+    1.  Go to lease-it/lease-api/ and run: `./gradlew bootRun`
+    2.  Go to lease-it/lease-ui/ and run: `npm start`
     3.  The backend service will be available at `localhost:8080/api`
     4.  The frontend UI will be available at `localhost:3000`
 -   To run using Docker, you need Docker Desktop installed. Then, follow these steps:
