@@ -31,8 +31,9 @@ You can access the API documentation at `localhost:9090/api/docs`
 
 ### Features
 
--   The backend service supports all the required operations and provides paging for GET requests to improve performance.
--   The frontend UI uses Material-UI designs and allows you to view contract overviews only [task focused on Backend]
+-   The backend service supports all the required operations and provides paging for Contract overview 
+GET requests to improve performance.
+-   Bonus: A frontend UI uses Material-UI designs & allows view contract overviews only [task focused on Backend]
 
 
 ![API](assets/api-list.png)

@@ -6,6 +6,9 @@ COPY package*.json ./
 
 RUN npm install
 
+ARG REACT_APP_API_ADDRESS
+ENV REACT_APP_API_ADDRESS=$REACT_APP_API_ADDRESS
+
 COPY . .
 
 RUN npm run build
