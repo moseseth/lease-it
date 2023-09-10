@@ -7,13 +7,13 @@ Service for leasing a vehicle to a customer
 
 ![ER](assets/ER.png)
 
-This project is a web application that allows you to manage vehicle leasing, customers, and lease contracts. It uses MySQL as the database, Java 17 as the backend service, and React as the frontend UI.
+This project is a web application that allows you to manage vehicle leasing, customers, and lease contracts. It uses MySQL for persisting data, Spring boot with Java 17 as the backend service, and React as a frontend tool.
 
 ### How to Run
 
 You can run the project using Docker.
 
--   Requires Docker Desktop. Then, follow these steps:
+-   *Requires Docker Desktop*. Then, follow these steps:
 
     1. Clone the repository and `cd lease-it`
     2. Rename `.env.example` to `.env` under `lease-api/`
