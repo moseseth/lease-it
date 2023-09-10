@@ -1,17 +1,13 @@
 package com.allane.leaseadmin.service;
 
 import com.allane.leaseadmin.dto.CustomerEditRequest;
-import com.allane.leaseadmin.dto.ErrorResponse;
 import com.allane.leaseadmin.exception.ResourceNotFoundException;
 import com.allane.leaseadmin.model.Customer;
-import com.allane.leaseadmin.model.Vehicle;
 import com.allane.leaseadmin.repository.CustomerRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 @Service
