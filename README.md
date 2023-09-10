@@ -15,10 +15,11 @@ You can run the project using Docker.
 
 -   Requires Docker Desktop. Then, follow these steps:
 
-    1. Rename `.env.example` to `.env` under `lease-api/`
-    2. Go to the root directory and run: `docker compose up -d`
-    3. The backend service will be available at `localhost:9090/api`
-    4. The frontend UI will be available at `localhost` (port 80)
+    1. Clone the repository and `cd lease-it`
+    2. Rename `.env.example` to `.env` under `lease-api/`
+    3. Go to the root directory and run: `docker compose up -d`
+    4. The backend service will be available at `localhost:9090/api`
+    5. The frontend UI will be available at `localhost` (port 80)
 
 ### Unit tests for lease-api 
 
