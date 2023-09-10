@@ -9,6 +9,8 @@ import com.allane.leaseadmin.service.LeaseContractService;
 import com.allane.leaseadmin.util.ValidationHelper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +30,8 @@ public class LeaseContractController {
 
     private final LeaseContractService leaseContractService;
 
+    private static final Logger logger = LoggerFactory.getLogger(LeaseContractController.class);
+
     @Autowired
     public LeaseContractController(LeaseContractService leaseContractService) {
         this.leaseContractService = leaseContractService;
@@ -44,10 +48,13 @@ public class LeaseContractController {
                                                    BindingResult bindingResult) {
         List<ValidationErrorResponse> validationErrorsResponse = ValidationHelper.handleValidationErrors(bindingResult);
         if (validationErrorsResponse != null) {
+            logger.warn("Validation errors occurred while creating a leasing contract: {}", validationErrorsResponse);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationErrorsResponse);
         }
 
         LeasingContract createdContract = leaseContractService.createLeasingContract(leasingContractDTO);
+        logger.info("Created a new leasing contract with ID: {}", createdContract.getId());
+
         return new ResponseEntity<>(createdContract, HttpStatus.CREATED);
     }
 
@@ -64,8 +71,10 @@ public class LeaseContractController {
     public ResponseEntity<?> getLeasingContractDetails(@PathVariable Long id) {
         try {
             LeasingContract leasingContract = leaseContractService.getLeasingContractById(id);
+
             return ResponseEntity.ok(leasingContract);
         } catch (NoSuchElementException e) {
+            logger.warn("Leasing contract not found for ID: {}", id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(List.of(new ErrorResponse("LeasingContract not found",
                             "The specified contract ID does not exist.")));
